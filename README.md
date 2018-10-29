@@ -12,7 +12,7 @@ Using NodeJS and the Kwnl library extract personal information about an email ad
 To install the project dependancies please run `npm install`. This project requires at least Node v8.11.4 and NPM 5.6.0
 
 ## Usage
-To run the crawler execute `npm run crawler you@example.com` in this directory.
+To run the crawler execute `npm run crawl -- you@example.com` in this directory.
 
 ## Testing
 
