@@ -9,7 +9,7 @@ let setupKnwl = ($) => {
         lang = $('html').attr('lang').replace(/-.*/, '');
         const languages = require('./json/languages');
         console.log(`Setting scrape language to ${languages[lang].name}`);
-        let knwlInstance = new Knwl(languages[lang].name);
+        knwlInstance = new Knwl(languages[lang].name);
         [
             { name: 'dates', file: 'default_plugins/dates' },
             { name: 'links', file: 'default_plugins/links' },
@@ -20,16 +20,28 @@ let setupKnwl = ($) => {
     }
 }
 
+let extractFrom = (item) => {
+    knwlInstance.init(item.text());
+    Object.keys(knwlInstance.plugins).forEach(function(key) {
+        let result = knwlInstance.get(key);
+        if (result.length !== 0) {
+            profile[key] = profile[key] || [];
+            result.forEach(function(rst) {
+                profile[key].push(rst.address);
+            });
+        }        
+    });
+}
+
 module.exports = {
-    parse(content) {
+    parse($) {
         if (! knwlInstance) {
-            setupKnwl(content);
+            setupKnwl($);
         }
 
-        let items = startElem.getElementsByTagName("*");
-        for (let i = items.length; i--;) {
-            extractFrom(item);
-        }
+        $('html').each(function() {
+            extractFrom($(this));
+        })
 
         return profile;
     }
