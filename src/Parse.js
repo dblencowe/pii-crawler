@@ -3,7 +3,7 @@ const Knwl = require('knwl.js');
 let knwlInstance = null;
 let profile = {};
 
-let setupKnwl = ($) => {
+function setupKnwl($) {
     let lang = null;
     if ($('html').attr('lang')) {
         lang = $('html').attr('lang').replace(/-.*/, '');
@@ -20,7 +20,7 @@ let setupKnwl = ($) => {
     }
 }
 
-let extractFrom = (item) => {
+function extractFrom(item) {
     knwlInstance.init(item.text());
     Object.keys(knwlInstance.plugins).forEach(function(key) {
         let result = knwlInstance.get(key);
@@ -33,16 +33,16 @@ let extractFrom = (item) => {
     });
 }
 
-module.exports = {
-    parse($) {
-        if (! knwlInstance) {
-            setupKnwl($);
-        }
-
-        $('html').each(function() {
-            extractFrom($(this));
-        })
-
-        return profile;
+function parse($) {
+    if (! knwlInstance) {
+        setupKnwl($);
     }
+
+    $('html').each(function() {
+        extractFrom($(this));
+    })
+
+    return profile;
 }
+
+module.exports = parse;
